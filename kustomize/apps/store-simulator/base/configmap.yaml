@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: store-simulator-cm
+data:
+  APP_VERSION: 0.0.2
+  APP_TARGET_MESSAGING: IBMMQ
+  MQ_HOST: mq1-cp4i-ibm-mq.cp4i-mq1.svc
+  # external: mq1-cp4i-ibm-mq-qm-cp4i-mq1.apps.biggs.coc-ibm.com
+  MQ_PORT: "1414"
+  MQ_QMGR: BIGGSQMGR 
+  MQ_QUEUE_NAME: lab.items
+  MQ_CHANNEL: STORE.CHANNEL

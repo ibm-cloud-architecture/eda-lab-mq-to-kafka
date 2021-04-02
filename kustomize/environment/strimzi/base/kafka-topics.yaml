@@ -1,0 +1,9 @@
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: lab.items
+  labels:
+    strimzi.io/cluster: lab-kafka
+spec:
+  partitions: 1
+  replicas: 1

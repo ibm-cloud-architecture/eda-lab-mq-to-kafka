@@ -1,0 +1,7 @@
+resources:
+  - ./serviceaccount.yaml
+  - ./rolebinding.yaml
+  - ./service.yaml
+  - ./route.yaml
+  - ./configmap.yaml
+  - ./deploymentconfig.yaml
