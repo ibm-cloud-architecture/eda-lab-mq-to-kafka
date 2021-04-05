@@ -1,0 +1,3 @@
+**/**.env
+kafka-connect-mq-sink/
+kafka-connect-mq-source/
