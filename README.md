@@ -13,7 +13,7 @@ For Confluent deployment, see the next sections below.
 ## What you will learn
 
 * **[Lab 1:](#lab-1---run-locally-with-docker-compose)** Run Confluent and IBM MQ locally and test the integration between MQ queues and Kafka topics using the Confluent Kafka MQ connectors.
-* **[Lab 2:](lab-2---run-on-openshift-container-platform)** Deploy the connector scenario to an OpenShift cluster with Confluent Platform and IBM MQ already deployed.
+* **[Lab 2:](#lab-2---run-on-openshift-container-platform)** Deploy the connector scenario to an OpenShift cluster with Confluent Platform and IBM MQ already deployed.
 
 ![](docs/mq-kafka-lab1.png)
 
@@ -112,18 +112,66 @@ This lab scenario utilizes the officially supported IBM MQ connectors from Confl
 You need the following:
 
 * [git](https://git-scm.com/)
-* [Maven 3.0 or later](https://maven.apache.org)
-* Java 8 or later
 * Confluent Kafka cluster deployed on OpenShift.
 * IBM MQ deployed inside Cloud Pak for Integration
 
 ### Scenario walkthrough
 
-Clone this repository:
+#### Create custom Kafka Connect container images
 
-```shell
-git clone https://github.com/ibm-cloud-architecture/eda-lab-mq-to-kafka.git
-```
+1. Clone this repository:
+    ```bash
+    git clone https://github.com/ibm-cloud-architecture/eda-lab-mq-to-kafka.git
+    cd eda-lab-mq-to-kafka
+    ```
+
+* TODO Explain what is being created.
+
+* `oc create istag cp-init-container-operator:6.1.1.0 --from-image=confluentinc/cp-init-container-operator:6.1.1.0 --reference-policy=local`
+* `oc create istag cp-server-connect-operator:6.1.1.0 --from-image=confluentinc/cp-server-connect-operator:6.1.1.0 --reference-policy=local`
+* `oc apply -f custom-connect-images/build-config.yaml`
+* `oc logs -f buildconfig/confluent-connect-mq`
+
+#### Update Confluent Platform container deployments
+
+> The assumption is made that Confluent Platform is deployed via https://github.ibm.com/ben-cornwell/confluent-operator, which deploys Confluent Schema Registry, Replicator, Connect, and Control Center as one Helm release. This is problematic when following Step 5 of the [Deploy Confluent Connectors](https://docs.confluent.io/operator/current/co-management.html#deploy-confluent-connectors) instructions, as the image registries required cannot be mixed between different components in the same release. Connect requires the internal OpenShift registry for our custom images we just created, while the other components still require the original docker.io registry.
+
+> If Confluent Platform was deployed via the instructions available at https://docs.confluent.io/operator/current/co-deployment.html and Connect is available as it's own Helm release (ie `helm get notes connectors`), you can follow the instructions in Step 5 of the [Deploy Confluent Connectors](https://docs.confluent.io/operator/current/co-management.html#deploy-confluent-connectors) instructions to update the Confluent custom resources via the operator.
+
+* TODO Explain what needs to updated.
+> spec.cloud.docker_repo = image-registry.openshift-image-registry.svc:5000
+> spec.common.container.image = ___LOCAL_PROJECT___/cp-server-connect-operator:6.1.1.0-custom-mq
+> spec.common.init_containers[0].image = ___LOCAL_PROJECT___/cp-init-container-operator:6.1.1.0
+
+*  `oc patch psc/connectors --type merge --patch "$(cat confluent-connectors-psc-patch.yaml | sed "s/___LOCAL_PROJECT___/$(oc project -q)/g")"`
+
+* Log in to Confluent Control Center and navigate to Cluster > {cluster name} > Connect > {connect cluster name} > **Add connector** and verify that the **IbmMqSinkConnector** and **IbmMQSourceConnector** are now available as connector options.
+
+#### Deploy MQ queue manager with remote access enabled
+
+* TODO
+
+#### Deploy Store Simulator application
+
+* TODO
+
+#### Configure MQ Connector
+
+* TODO
+
+#### Verify end-to-end connectivity
+
+* TODO
+
+---
+---
+---
+
+# OLD MATERIAL
+
+---
+---
+---
 
 ### Get Kafka Confluent access credentials
 
