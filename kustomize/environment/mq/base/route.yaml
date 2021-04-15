@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: store-simulator-mq
+spec:
+  # CHANNEL NAME mapped to host value below per
+  # https://www.ibm.com/docs/en/ibm-mq/9.2?topic=requirements-how-mq-provides-multiple-certificates-capability
+  host: dev2e-app2e-svrconn.chl.mq.ibm.com
+  to:
+    kind: Service
+    name: store-simulator-mq-ibm-mq
+  port:
+    targetPort: 1414
+  tls:
+    termination: passthrough

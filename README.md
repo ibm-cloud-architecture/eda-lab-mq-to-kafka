@@ -112,8 +112,10 @@ This lab scenario utilizes the officially supported IBM MQ connectors from Confl
 You need the following:
 
 * [git](https://git-scm.com/)
-* Confluent Kafka cluster deployed on OpenShift.
-* IBM MQ deployed inside Cloud Pak for Integration
+* [oc CLI](#tbd) - TODO
+* [openssl](#tbd) - TODO
+* Confluent Platform (Kafka cluster) deployed on Red Hat OpenShift
+* IBM MQ Operator on Red Hat OpenShift
 
 ### Scenario walkthrough
 
@@ -149,7 +151,27 @@ You need the following:
 
 #### Deploy MQ queue manager with remote access enabled
 
-* TODO
+* TODO Create queue manager via https://www.ibm.com/docs/en/ibm-mq/9.2?topic=manager-example-configuring-tls
+
+* From the root directory of the repository...
+
+* Create certs:
+```bash
+openssl req -newkey rsa:2048 -nodes  -subj "/CN=localhost" -x509 -days 3650 -keyout  ./kustomize/environment/mq/base/certificates/tls.key -out ./kustomize/environment/mq/base/certificates/tls.crt
+```
+
+* TODO OTHER Kustomize UPDATES
+  * Queue Manager name (affects qm)
+  * Channel name (affects configmap/route)
+  * Queue name (affects configmap)
+
+* Apply Kustomize YAMLS:
+```bash
+oc apply -k kustomize/environment/mq
+```
+
+* TODO (optional) mq client app validation via container
+
 
 #### Deploy Store Simulator application
 
@@ -198,15 +220,9 @@ or create a secret using
 ./scripts/createJaasSecret.sh
 ```
 
-### Get the MQ Broker credential
-
-
 ### Deploy the Store simulator
 
 Define the secrets to connect to MQ Broker:
-
-```
-```
 
 Using the kustomize extension to `oc` CLI:
 
@@ -214,35 +230,6 @@ Using the kustomize extension to `oc` CLI:
 oc apply -k kustomize/apps/store-simulator/
 ```
 
-### Deploy Kafka Connect with MQ Connector
-
-* Clone the Source and Sink connector repositories
-
-```shell
-./scripts/cloneMQConnectors.sh
-```
-
-You should get one `kafka-connect-mq-source` and `kafka-connect-mq-sink` folders.
-
-* Build each jars file for both connectors
-
-```shell
-cd kafka-connect-mq-sink
-mvn clean package
-cd ../kafka-connect-mq-source
-mvn clean package
-```
-
 * Modify the `mq-source.properties` under kustomize/kconnect/config to reflect the name of your brokers, channel and queues
-
-* Deploy the connector using Confluent Connector deployment
-
-* Modify the mq-source.json to define the connector
-
-Create the two Kafka topics needed for `items` and `inventory`:
-
-```shell
-./scripts/createTopics.sh
-```
 
 The default QManager is `QM1`, the Channel is `DEV.APP.SVRCONN` and the queue is `DEV.QUEUE.1`. The channel and queue are configured to accept connection.

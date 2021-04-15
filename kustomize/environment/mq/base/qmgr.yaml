@@ -1,0 +1,37 @@
+apiVersion: mq.ibm.com/v1beta1
+kind: QueueManager
+metadata:
+  name: store-simulator-mq
+spec:
+  license:
+    accept: true
+    license: L-RJON-BUVMQX
+    use: NonProduction
+  queueManager:
+    name: QM1
+    mqsc:
+    - configMap:
+        name: store-simulator-mq-msqc
+        items:
+        - tls.mqsc
+    storage:
+      queueManager:
+        type: ephemeral
+  template:
+    pod:
+      containers:
+        - env:
+            - name: MQSNOAUT
+              value: 'yes'
+          name: qmgr
+  version: 9.2.1.0-r1
+  web:
+    enabled: true
+  pki:
+    keys:
+      - name: storesimulator
+        secret:
+          secretName: store-simulator-mq-certs
+          items:
+          - tls.key
+          - tls.crt

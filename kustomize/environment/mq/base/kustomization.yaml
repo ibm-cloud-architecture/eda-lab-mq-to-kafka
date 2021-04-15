@@ -1,0 +1,15 @@
+resources:
+  - ./config-map.yaml
+  - ./route.yaml
+  - ./qmgr.yaml
+
+
+secretGenerator:
+  - name: store-simulator-mq-certs
+    files:
+      - ./certificates/tls.crt
+      - ./certificates/tls.key
+    type: "kubernetes.io/tls"
+
+generatorOptions:
+  disableNameSuffixHash: true
