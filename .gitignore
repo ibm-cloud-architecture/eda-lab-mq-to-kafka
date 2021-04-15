@@ -5,3 +5,4 @@ kafka-connect-mq-sink/
 kafka-connect-mq-source/
 **.crt
 **.key
+**.jks

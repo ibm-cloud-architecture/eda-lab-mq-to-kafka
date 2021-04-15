@@ -49,16 +49,19 @@ spec:
             secretKeyRef:
               key: user.password
               name: tls-user
+              optional: true
         - name: KAFKA_CERT_PWD
           valueFrom:
             secretKeyRef:
               key: ca.password
               name: lab-kafka-cluster-ca-cert
+              optional: true
         - name: KAFKA_PASSWORD
           valueFrom:
             secretKeyRef:
               key: user.password
               name: tls-user
+              optional: true
         - name: JAVA_APP_JAR
           value: /deployments/quarkus-run.jar
         envFrom:
@@ -105,10 +108,10 @@ spec:
       - name: kafka-cert
         secret:
           defaultMode: 384
-          optional: false
+          optional: true
           secretName: lab-kafka-cluster-ca-cert
       - name: user-cert
         secret:
           defaultMode: 384
-          optional: false
+          optional: true
           secretName: tls-user

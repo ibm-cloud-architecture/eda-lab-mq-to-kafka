@@ -10,6 +10,11 @@ secretGenerator:
       - ./certificates/tls.crt
       - ./certificates/tls.key
     type: "kubernetes.io/tls"
+  - name: mq-tls-truststore
+    files:
+      - ./certificates/mq-tls.jks
+    literals:
+      - password=my-mq-password
 
 generatorOptions:
   disableNameSuffixHash: true

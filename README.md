@@ -160,6 +160,11 @@ You need the following:
 openssl req -newkey rsa:2048 -nodes  -subj "/CN=localhost" -x509 -days 3650 -keyout  ./kustomize/environment/mq/base/certificates/tls.key -out ./kustomize/environment/mq/base/certificates/tls.crt
 ```
 
+* Create client truststore:
+```bash
+keytool -keystore /Users/osowski/projects/eda/eda-lab-mq-to-kafka/kustomize/environment/mq/base/certificates/mq-tls.jks -import -file /Users/osowski/projects/eda/eda-lab-mq-to-kafka/kustomize/environment/mq/base/certificates/tls.crt -storepass my-mq-password -noprompt
+```
+
 * TODO OTHER Kustomize UPDATES
   * Queue Manager name (affects qm)
   * Channel name (affects configmap/route)
@@ -171,7 +176,6 @@ oc apply -k kustomize/environment/mq
 ```
 
 * TODO (optional) mq client app validation via container
-
 
 #### Deploy Store Simulator application
 
