@@ -5,9 +5,13 @@ metadata:
 data:
   APP_VERSION: 0.0.2
   APP_TARGET_MESSAGING: IBMMQ
-  MQ_HOST: mq1-cp4i-ibm-mq.cp4i-mq1.svc
+  #MQ_HOST: store-simulator-mq-ibm-mq
+  MQ_HOST: store-simulator-mq-ibm-mq-qm-eda-integration.assets-arch-eda-6ccd7f378ae819553d37d5f2ee142bd6-0000.us-east.containers.appdomain.cloud
+  # TODO NEEDS ROUTE HOST LOOKUP FOR EXTERNAL ACCESS
   # external: mq1-cp4i-ibm-mq-qm-cp4i-mq1.apps.biggs.coc-ibm.com
-  MQ_PORT: "1414"
-  MQ_QMGR: BIGGSQMGR 
-  MQ_QUEUE_NAME: lab.items
-  MQ_CHANNEL: STORE.CHANNEL
+  #MQ_PORT: "1414"
+  MQ_PORT: "443"
+  MQ_QMGR: QM1
+  MQ_QUEUE_NAME: DEV.QUEUE.1
+  MQ_CHANNEL: DEV.APP.SVRCONN
+  #MQ_APP_USER: admin

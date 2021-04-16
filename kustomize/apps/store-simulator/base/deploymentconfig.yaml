@@ -23,6 +23,9 @@ spec:
       - args:
         - -Dquarkus.http.host=0.0.0.0
         - -Djava.util.logging.manager=org.jboss.logmanager.LogManager
+        - -Djavax.net.ssl.trustStoreType=jks
+        - -Djavax.net.ssl.trustStore=/deployments/certs/mq-tls/mq-tls.jks
+        - -Djavax.net.ssl.trustStorePassword=my-mq-password
         - -jar
         - /deployments/quarkus-run.jar
         command:
@@ -42,6 +45,8 @@ spec:
           value: tls-user
         - name: KAFKA_BROKERS
           value: lab-kafka-bootstrap.jb-lab.svc:9093
+        - name: MQ_CIPHER_SUITE
+          value: TLS12ORHIGHER
         - name: USER_CERT_PATH
           value: /deployments/certs/user/user.p12
         - name: USER_CERT_PWD
@@ -62,13 +67,17 @@ spec:
               key: user.password
               name: tls-user
               optional: true
+        - name: KAFKA_CERT_PATH
+          value: /deployments/certs/server/ca.p12
+        - name: MQ_CCDT_CONFIG_PATH
+          value: /deployments/certs/mq-ccdt/mq-ccdt.json
         - name: JAVA_APP_JAR
           value: /deployments/quarkus-run.jar
         envFrom:
         - configMapRef:
             name: store-simulator-cm
         image: quay.io/ibmcase/eda-store-simulator
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
           httpGet:
@@ -96,7 +105,15 @@ spec:
           timeoutSeconds: 10
         volumeMounts:
         - mountPath: /deployments/certs/server
-          name: kafka-cert
+          name: es-cert
+          readOnly: false
+          subPath: ""
+        - mountPath: /deployments/certs/mq-ccdt
+          name: mq-ccdt-config
+          readOnly: false
+          subPath: ""
+        - mountPath: /deployments/certs/mq-tls
+          name: mq-tls-truststore
           readOnly: false
           subPath: ""
         - mountPath: /deployments/certs/user
@@ -110,8 +127,18 @@ spec:
           defaultMode: 384
           optional: true
           secretName: lab-kafka-cluster-ca-cert
+      - name: mq-tls-truststore
+        secret:
+          defaultMode: 384
+          optional: false
+          secretName: store-simulator-mq-truststore
       - name: user-cert
         secret:
           defaultMode: 384
           optional: true
           secretName: tls-user
+      - name: mq-ccdt-config
+        configMap:
+          defaultMode: 384
+          name: mq-ccdt-config
+          optional: false

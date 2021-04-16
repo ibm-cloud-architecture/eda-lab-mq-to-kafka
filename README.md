@@ -162,7 +162,7 @@ openssl req -newkey rsa:2048 -nodes  -subj "/CN=localhost" -x509 -days 3650 -key
 
 * Create client truststore:
 ```bash
-keytool -keystore /Users/osowski/projects/eda/eda-lab-mq-to-kafka/kustomize/environment/mq/base/certificates/mq-tls.jks -import -file /Users/osowski/projects/eda/eda-lab-mq-to-kafka/kustomize/environment/mq/base/certificates/tls.crt -storepass my-mq-password -noprompt
+keytool -keystore /Users/osowski/projects/eda/eda-lab-mq-to-kafka/kustomize/environment/mq/base/certificates/mq-tls.jks -import -file /Users/osowski/projects/eda/eda-lab-mq-to-kafka/kustomize/environment/mq/base/certificates/tls.crt -storepass my-mq-password -noprompt -keyalg RSA -storetype JKS
 ```
 
 * TODO OTHER Kustomize UPDATES
@@ -170,7 +170,7 @@ keytool -keystore /Users/osowski/projects/eda/eda-lab-mq-to-kafka/kustomize/envi
   * Channel name (affects configmap/route)
   * Queue name (affects configmap)
 
-* Apply Kustomize YAMLS:
+* Apply Kustomize YAMLs:
 ```bash
 oc apply -k kustomize/environment/mq
 ```
@@ -179,7 +179,10 @@ oc apply -k kustomize/environment/mq
 
 #### Deploy Store Simulator application
 
-* TODO
+* Apply Kustomize YAMLs:
+```bash
+oc apply -k kustomize/apps/store-simulator
+```
 
 #### Configure MQ Connector
 

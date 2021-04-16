@@ -10,7 +10,7 @@ secretGenerator:
       - ./certificates/tls.crt
       - ./certificates/tls.key
     type: "kubernetes.io/tls"
-  - name: mq-tls-truststore
+  - name: store-simulator-mq-truststore
     files:
       - ./certificates/mq-tls.jks
     literals:
