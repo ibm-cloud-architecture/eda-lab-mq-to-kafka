@@ -1,0 +1,11 @@
+spec:
+  cloud:
+    docker_repo: image-registry.openshift-image-registry.svc:5000
+  common:
+    container:
+      image: ${PROJECT_CONFLUENT_PLATFORM}/cp-server-connect-operator:6.1.1.0-custom-mq
+      mounted_secrets:
+      - secret_ref: store-simulator-mq-truststore
+    init_containers:
+      - name: init-container
+        image: ${PROJECT_CONFLUENT_PLATFORM}/cp-init-container-operator:6.1.1.0

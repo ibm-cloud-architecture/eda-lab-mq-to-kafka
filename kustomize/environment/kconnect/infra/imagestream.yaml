@@ -1,0 +1,33 @@
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: cp-init-container-operator
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - from:
+      kind: DockerImage
+      name: confluentinc/cp-init-container-operator:6.1.1.0
+    importPolicy: {}
+    name: 6.1.1.0
+    referencePolicy:
+      type: Local
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: cp-server-connect-operator
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - from:
+      kind: DockerImage
+      name: confluentinc/cp-server-connect-operator:6.1.1.0
+    importPolicy: {}
+    name: 6.1.1.0
+    referencePolicy:
+      type: Local
+---

@@ -15,6 +15,7 @@ secretGenerator:
       - ./certificates/mq-tls.jks
     literals:
       - password=my-mq-password
+      - jksPassword.txt=password=my-mq-password
 
 generatorOptions:
   disableNameSuffixHash: true

@@ -1,9 +1,0 @@
-spec:
-  cloud:
-    docker_repo: image-registry.openshift-image-registry.svc:5000
-  common:
-    container:
-      image: ___LOCAL_PROJECT___/cp-server-connect-operator:6.1.1.0-custom-mq
-    init_containers:
-      - name: init-container
-        image: ___LOCAL_PROJECT___/cp-init-container-operator:6.1.1.0
