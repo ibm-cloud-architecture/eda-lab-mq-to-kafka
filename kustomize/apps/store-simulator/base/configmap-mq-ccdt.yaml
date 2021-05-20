@@ -14,7 +14,7 @@ data:
                     "connection":
                     [
                         {
-                            "host": "store-simulator-mq-ibm-mq-qm-eda-integration.assets-arch-eda-6ccd7f378ae819553d37d5f2ee142bd6-0000.us-east.containers.appdomain.cloud",
+                            "host": "${MQ_ROUTE_HOST}",
                             "port": 443
                         }
                     ],
