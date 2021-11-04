@@ -40,16 +40,23 @@ This lab scenario utilizes the officially supported IBM MQ connectors from Confl
     cd eda-lab-mq-to-kafka/confluent
     ```
 
-1. Download the `confluentinc-kafka-connect-ibmmq-11.0.2.zip` file from https://www.confluent.io/hub/confluentinc/kafka-connect-ibmmq and copy the expanded contents (the entire `confluentinc-kafka-connect-ibmmq-11.0.2` folder) to `./data/connect-jars`:
+1. Download the `confluentinc-kafka-connect-ibmmq-11.0.8.zip` file from https://www.confluent.io/hub/confluentinc/kafka-connect-ibmmq and copy the expanded contents (the entire `confluentinc-kafka-connect-ibmmq-11.0.8` folder) to `./data/connect-jars`:
     ```bash
+    # Verify latest version of Confluent MQ Connector
+    curl -s -L https://www.confluent.io/hub/confluentinc/kafka-connect-ibmmq | \
+      grep --only-matching  "confluent-hub install confluentinc/kafka-connect-ibmmq\:[0-9]*\.[0-9]*\.[0-9]*" | \
+      sed "s/confluent-hub install confluentinc\/kafka-connect-ibmmq\://g"
+    
+    # Latest version at the time of this writing was 11.0.8
+
     # Manually download the file from https://www.confluent.io/hub/confluentinc/kafka-connect-ibmmq
-    unzip ~/Downloads/confluentinc-kafka-connect-ibmmq-11.0.2 -d ./data/connect-jars/
+    unzip ~/Downloads/confluentinc-kafka-connect-ibmmq-11.0.8 -d ./data/connect-jars/
     ```
 
 1.  Download the required IBM MQ client jars:
     ```bash
     curl -s https://repo1.maven.org/maven2/com/ibm/mq/com.ibm.mq.allclient/9.2.2.0/com.ibm.mq.allclient-9.2.2.0.jar -o com.ibm.mq.allclient-9.2.2.0.jar
-    cp com.ibm.mq.allclient-9.2.2.0.jar data/connect-jars/confluentinc-kafka-connect-ibmmq-11.0.2/lib/.
+    cp com.ibm.mq.allclient-9.2.2.0.jar data/connect-jars/confluentinc-kafka-connect-ibmmq-11.0.8/lib/.
     ```
 
 1. Start the containers locally by launching the `docker-compose` stack:
@@ -148,6 +155,7 @@ You need the following:
     export PROJECT_STORE_SIMULATOR=my-store-simulator-project
     ```
 
+    > **NOTE:** If any of the above projects are not created in your OpenShift cluster, you will need to create them via the `oc new-project PROJECT_NAME` command.
 
 #### Deploy MQ queue manager with remote access enabled
 
