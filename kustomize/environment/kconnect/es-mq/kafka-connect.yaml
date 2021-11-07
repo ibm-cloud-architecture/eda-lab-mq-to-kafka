@@ -1,0 +1,44 @@
+apiVersion: eventstreams.ibm.com/v1beta1
+kind: KafkaConnect
+metadata:
+  name: my-connect-cluster
+  annotations:
+    eventstreams.ibm.com/use-connector-resources: "true"
+spec:
+  version: 2.8.0
+  replicas: 2
+  bootstrapServers: dev-kafka-bootstrap.smq-dev.svc:9093
+  image: quay.io/ibmcase/demomqconnect:latest
+  template:
+    pod:
+      imagePullSecrets: []
+      metadata:
+        annotations:
+          eventstreams.production.type: CloudPakForIntegrationNonProduction
+          productID: 2a79e49111f44ec3acd89608e56138f5
+          productName: IBM Event Streams for Non Production
+          productVersion: 10.4.0
+          productMetric: VIRTUAL_PROCESSOR_CORE
+          productChargedContainers: my-connect-cluster-connect
+          cloudpakId: c8b82d189e7545f0892db9ef2731b90d
+          cloudpakName: IBM Cloud Pak for Integration
+          cloudpakVersion: 2021.3.1
+          productCloudpakRatio: "2:1"
+  config:
+    group.id: connect-cluster
+    offset.storage.topic: connect-cluster-offsets
+    config.storage.topic: connect-cluster-configs
+    status.storage.topic: connect-cluster-status
+    config.storage.replication.factor: 3
+    offset.storage.replication.factor: 3
+    status.storage.replication.factor: 3
+  tls:
+    trustedCertificates:
+      - secretName: dev-cluster-ca-cert
+        certificate: ca.crt
+  authentication:
+    type: tls
+    certificateAndKey:
+      secretName: tls-mq-user
+      certificate: user.crt
+      key: user.key
