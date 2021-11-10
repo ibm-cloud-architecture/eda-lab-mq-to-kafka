@@ -1,14 +1,14 @@
 
 # Lab to MQ to Kafka
 
-A hands-on lab series to demonstrate end-to-end integration between a JMS application using JMS to MQ and then Kafka. 
+A hands-on lab to demonstrate an end-to-end integration between a web application using JMS to MQ and then Kafka. 
 The application is sending sold item data from different stores to MQ queue, which is a source for MQ Kafka connector to
 write the item sold to the `items` kafka topic.
 
-In this readme we present local to your workstation deployments with Conlfuent Kafka or Strimzi docker image and one OpenShift deployment
-for Confluent.
+In this readme we present local deployment to your workstation deployments with  Kafka Confluent or Kafka Strimzi and the deployment of Kafka Confluent on OpenShift.
 
-For IBM Event Streams and IBM MQ with Cloud Pak for Integration, we have different labs described in the [EDA use cases](https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-mq/)
+For IBM Event Streams and IBM MQ with Cloud Pak for Integration, 
+we have different labs described in the [EDA use cases](https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-mq/)
 
 ## Audience
 

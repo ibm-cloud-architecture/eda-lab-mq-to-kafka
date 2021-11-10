@@ -1,0 +1,26 @@
+apiVersion: eventstreams.ibm.com/v1alpha1
+kind: KafkaConnector
+metadata:
+  name: mq-source
+  labels:
+    # The eventstreams.ibm.com/cluster label identifies the KafkaConnect instance
+    # in which to create this connector. That KafkaConnect instance
+    # must have the eventstreams.ibm.com/use-connector-resources annotation
+    # set to true.
+    eventstreams.ibm.com/cluster: my-connect-cluster
+spec:
+  class: com.ibm.eventstreams.connect.mqsource.MQSourceConnector
+  tasksMax: 1
+  config:
+    topic: items
+    mq.queue.manager: QM1
+    mq.connection.name.list: store-mq-ibm-mq.smq-dev.svc(1414)
+    mq.channel.name: DEV.APP.SVRCONN
+    mq.queue: items
+    # mq.user.name: alice
+    # mq.password: passw0rd
+    key.converter: org.apache.kafka.connect.storage.StringConverter
+    value.converter: org.apache.kafka.connect.storage.StringConverter
+    mq.record.builder: com.ibm.eventstreams.connect.mqsource.builders.DefaultRecordBuilder
+
+
